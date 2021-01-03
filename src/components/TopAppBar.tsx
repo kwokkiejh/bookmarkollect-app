@@ -1,5 +1,12 @@
 import * as React from "react";
-import { AppBar, Button, Toolbar, Typography } from "@material-ui/core";
+import {
+  AppBar,
+  Button,
+  Toolbar,
+  Typography,
+  Menu,
+  MenuItem,
+} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
@@ -17,11 +24,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 interface TopAppBarProps {
-  handleClickOpen: (event: React.MouseEvent<HTMLElement>) => void;
+  handleClickOpen: () => void;
+  handleClickClose: () => void;
 }
 
 const TopAppBar: React.FC<TopAppBarProps> = (props) => {
-  const { handleClickOpen } = props;
+  const { handleClickOpen, handleClickClose } = props;
   const classes = useStyles();
 
   return (
@@ -36,10 +44,7 @@ const TopAppBar: React.FC<TopAppBarProps> = (props) => {
           </Typography>
           <Button
             variant="contained"
-            style={{
-              backgroundColor: "#008b94",
-              color: "#fff",
-            }}
+            color="primary"
             startIcon={<AddIcon />}
             onClick={handleClickOpen}
           >
