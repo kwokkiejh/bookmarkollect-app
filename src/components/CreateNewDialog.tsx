@@ -119,9 +119,7 @@ const BookmarkCollectionToggle = (props: CreateNewDialogProps) => {
 
 const CreateNewDialog: React.FC<CreateNewDialogProps> = (props) => {
   const { handleClickClose, open, bookmarkSelected } = props;
-  const theme = useTheme();
-  const matchesBreakpointXs = useMediaQuery(theme.breakpoints.only("xs"));
-
+  const matchesBelow500 = useMediaQuery("(max-width:499px)");
   const classes = useStyles();
   return (
     <div>
@@ -130,7 +128,7 @@ const CreateNewDialog: React.FC<CreateNewDialogProps> = (props) => {
         onClose={handleClickClose}
         aria-labelledby="form-dialog-title"
         classes={{ paper: classes.paper }}
-        fullScreen={matchesBreakpointXs}
+        fullScreen={matchesBelow500}
       >
         <DialogContent>
           <Typography

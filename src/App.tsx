@@ -3,21 +3,11 @@ import "./App.css";
 
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import MyBookmarks from "./pages/MyBookmarks";
-import TopAppBar from "./components/TopAppBar";
 import Test from "./pages/Test";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import purple from "@material-ui/core/colors/purple";
+import MyCollections from "./pages/MyCollections";
 
 const theme = createMuiTheme({
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 480,
-      md: 960,
-      lg: 1280,
-      xl: 1920,
-    },
-  },
   palette: {
     primary: {
       light: "#dceae3",
@@ -44,6 +34,7 @@ const App = () => {
               <Redirect to="/bookmarks"></Redirect>
             </Route>
             <Route path="/bookmarks" component={MyBookmarks} exact />
+            <Route path="/collections" component={MyCollections} exact />
             <Route path="/test" component={Test} exact />
           </Switch>
         </BrowserRouter>
