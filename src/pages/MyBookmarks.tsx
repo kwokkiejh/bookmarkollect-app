@@ -1,6 +1,5 @@
 import * as React from "react";
-import { List, Container } from "@material-ui/core";
-import PageHeader from "../components/PageHeader";
+import { List, Container, Typography } from "@material-ui/core";
 import SearchBar from "../components/SearchBar";
 import BookmarkItem from "../components/BookmarkItem";
 import TopAppBar from "../components/TopAppBar";
@@ -98,10 +97,9 @@ const MyBookmarks = () => {
         handleClickClose={handleClickClose}
       />
 
-      <PageHeader />
       <Container style={{ padding: "36px" }}>
+        <Typography variant="h5">My Bookmarks</Typography>
         <SearchBar />
-        <br />
         <List>
           {listOfBookmarks.map((bookmark) => {
             return (

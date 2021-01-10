@@ -12,14 +12,19 @@ import AddIcon from "@material-ui/icons/Add";
 const SearchBar = () => {
   return (
     <Paper
-      style={{ padding: "8px 16px", backgroundColor: "rgb(226, 230, 232)" }}
+      style={{
+        marginTop: "8px",
+        padding: "4px 16px",
+        backgroundColor: "#f9f9f9",
+      }}
+      elevation={0}
     >
       <InputBase
         fullWidth
         placeholder="Search"
         endAdornment={
           <InputAdornment position="end">
-            <IconButton aria-label="search">
+            <IconButton disabled={true} aria-label="search">
               <SearchIcon />
             </IconButton>
           </InputAdornment>

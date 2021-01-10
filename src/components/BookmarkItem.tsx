@@ -13,7 +13,12 @@ import {
   Divider,
   useMediaQuery,
 } from "@material-ui/core";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import {
+  createMuiTheme,
+  makeStyles,
+  ThemeProvider,
+  useTheme,
+} from "@material-ui/core/styles";
 
 import {
   FormatListBulletedOutlined,
@@ -33,6 +38,40 @@ interface BookmarkItemProps {
   drawerOpen: boolean;
   onDrawerClose: () => void;
 }
+
+const theme = createMuiTheme({
+  overrides: {
+    MuiIconButton: {
+      root: {
+        "&:hover": {
+          backgroundColor: "#dceae3",
+        },
+      },
+    },
+
+    MuiListItem: {
+      root: {
+        "&$selected": {
+          backgroundColor: "#dceae3",
+        },
+      },
+      button: {
+        "&:hover": {
+          backgroundColor: "#dceae3",
+          textDecoration: "underline",
+        },
+      },
+    },
+    MuiMenuItem: {
+      root: {
+        "&:hover": {
+          backgroundColor: "rgba(0,0,0,0.08)",
+          textDecoration: "none",
+        },
+      },
+    },
+  },
+});
 const BookmarkItem: React.FC<BookmarkItemProps> = (props) => {
   const {
     bookmark,
@@ -44,19 +83,9 @@ const BookmarkItem: React.FC<BookmarkItemProps> = (props) => {
     onDrawerClose,
   } = props;
 
-  const useStyles = makeStyles({
-    root: {
-      "&:hover": {
-        textDecoration: "underline",
-      },
-    },
-  });
-
-  const classes = useStyles();
-  const theme = useTheme();
-  const matchesBreakpointXs = useMediaQuery(theme.breakpoints.only("xs"));
+  const matchesBelow500 = useMediaQuery("(max-width:499px)");
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <ListItem
         selected={menuSelectedId === bookmark.id ? true : false}
         button
@@ -65,7 +94,6 @@ const BookmarkItem: React.FC<BookmarkItemProps> = (props) => {
         href={bookmark.url}
         target="_blank"
         rel="noopener"
-        className={classes.root}
       >
         <ListItemAvatar>
           <Avatar
@@ -85,9 +113,8 @@ const BookmarkItem: React.FC<BookmarkItemProps> = (props) => {
           </IconButton>
         </ListItemSecondaryAction>
       </ListItem>
-      <Divider />
 
-      {!matchesBreakpointXs && (
+      {!matchesBelow500 && (
         <Menu
           getContentAnchorEl={null}
           anchorEl={menuAnchorEl}
@@ -107,7 +134,7 @@ const BookmarkItem: React.FC<BookmarkItemProps> = (props) => {
           <MenuItem onClick={onMenuClose}>Delete</MenuItem>
         </Menu>
       )}
-      {matchesBreakpointXs && (
+      {matchesBelow500 && (
         <Drawer anchor={"bottom"} open={drawerOpen} onClose={onDrawerClose}>
           <List>
             <ListItem>Edit</ListItem>
@@ -115,7 +142,7 @@ const BookmarkItem: React.FC<BookmarkItemProps> = (props) => {
           </List>
         </Drawer>
       )}
-    </>
+    </ThemeProvider>
   );
 };
 export default BookmarkItem;
