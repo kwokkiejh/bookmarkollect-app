@@ -85,64 +85,67 @@ const BookmarkItem: React.FC<BookmarkItemProps> = (props) => {
 
   const matchesBelow500 = useMediaQuery("(max-width:499px)");
   return (
-    <ThemeProvider theme={theme}>
-      <ListItem
-        selected={menuSelectedId === bookmark.id ? true : false}
-        button
-        key={bookmark.id}
-        component="a"
-        href={bookmark.url}
-        target="_blank"
-        rel="noopener"
-      >
-        <ListItemAvatar>
-          <Avatar
-            src={`https://www.google.com/s2/favicons?sz=32&domain_url=${bookmark.url}`}
-            alt="urlImage"
-          >
-            <Avatar src={"/broken-image.jpg"} alt="fallbackUrlImage" />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText>{bookmark.title}</ListItemText>
-        <ListItemSecondaryAction>
-          <IconButton
-            aria-label="more"
-            onClick={(event) => onMenuClick(event, bookmark.id)}
-          >
-            <MoreVertRounded />
-          </IconButton>
-        </ListItemSecondaryAction>
-      </ListItem>
-
-      {!matchesBelow500 && (
-        <Menu
-          getContentAnchorEl={null}
-          anchorEl={menuAnchorEl}
-          keepMounted
-          open={Boolean(menuAnchorEl)}
-          onClose={onMenuClose}
-          anchorOrigin={{
-            vertical: "center",
-            horizontal: "left",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
+    <>
+      <ThemeProvider theme={theme}>
+        <ListItem
+          ContainerComponent="div"
+          selected={menuSelectedId === bookmark.id ? true : false}
+          button
+          key={bookmark.id}
+          component="a"
+          href={bookmark.url}
+          target="_blank"
+          rel="noopener"
         >
-          <MenuItem onClick={onMenuClose}>Edit</MenuItem>
-          <MenuItem onClick={onMenuClose}>Delete</MenuItem>
-        </Menu>
-      )}
-      {matchesBelow500 && (
-        <Drawer anchor={"bottom"} open={drawerOpen} onClose={onDrawerClose}>
-          <List>
-            <ListItem>Edit</ListItem>
-            <ListItem>Delete</ListItem>
-          </List>
-        </Drawer>
-      )}
-    </ThemeProvider>
+          <ListItemAvatar>
+            <Avatar
+              src={`https://www.google.com/s2/favicons?sz=32&domain_url=${bookmark.url}`}
+              alt="urlImage"
+            >
+              <Avatar src={"/broken-image.jpg"} alt="fallbackUrlImage" />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText>{bookmark.title}</ListItemText>
+          <ListItemSecondaryAction>
+            <IconButton
+              aria-label="more"
+              onClick={(event) => onMenuClick(event, bookmark.id)}
+            >
+              <MoreVertRounded />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+
+        {!matchesBelow500 && (
+          <Menu
+            getContentAnchorEl={null}
+            anchorEl={menuAnchorEl}
+            keepMounted
+            open={Boolean(menuAnchorEl)}
+            onClose={onMenuClose}
+            anchorOrigin={{
+              vertical: "center",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            <MenuItem onClick={onMenuClose}>Edit</MenuItem>
+            <MenuItem onClick={onMenuClose}>Delete</MenuItem>
+          </Menu>
+        )}
+        {matchesBelow500 && (
+          <Drawer anchor={"bottom"} open={drawerOpen} onClose={onDrawerClose}>
+            <List>
+              <ListItem>Edit</ListItem>
+              <ListItem>Delete</ListItem>
+            </List>
+          </Drawer>
+        )}
+      </ThemeProvider>
+    </>
   );
 };
 export default BookmarkItem;

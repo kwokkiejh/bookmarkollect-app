@@ -5,7 +5,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import {
-  DialogTitle,
+  Box,
   Popper,
   PopperProps,
   Typography,
@@ -127,7 +127,9 @@ const CreateNewDialog: React.FC<CreateNewDialogProps> = (props) => {
         open={open}
         onClose={handleClickClose}
         aria-labelledby="form-dialog-title"
-        classes={{ paper: classes.paper }}
+        //classes={{ paper: classes.paper }}
+        fullWidth={true}
+        maxWidth="xs"
         fullScreen={matchesBelow500}
       >
         <DialogContent>
@@ -212,15 +214,18 @@ const CreateNewDialog: React.FC<CreateNewDialogProps> = (props) => {
               </FormHelperText>*/}
 
           {!bookmarkSelected && (
-            <TextField
-              margin="dense"
-              id="name"
-              label="Name"
-              fullWidth
-              inputProps={{
-                maxLength: 100,
-              }}
-            />
+            <>
+              <TextField
+                margin="dense"
+                id="name"
+                label="Name"
+                fullWidth
+                inputProps={{
+                  maxLength: 100,
+                }}
+              />
+              <Box style={{ height: "114px" }} />
+            </>
           )}
         </DialogContent>
 

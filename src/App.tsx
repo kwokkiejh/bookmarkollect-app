@@ -11,7 +11,7 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       light: "#dceae3",
-      main: "#008b94",
+      main: "#3B959B",
       contrastText: "#fff",
     },
   },
@@ -19,6 +19,35 @@ const theme = createMuiTheme({
     MuiButton: {
       root: {
         borderRadius: 25,
+      },
+    },
+    MuiIconButton: {
+      root: {
+        "&:hover": {
+          backgroundColor: "#dceae3",
+        },
+      },
+    },
+
+    MuiListItem: {
+      root: {
+        "&$selected": {
+          backgroundColor: "#dceae3",
+        },
+      },
+      button: {
+        "&:hover": {
+          backgroundColor: "#dceae3",
+          //textDecoration: "underline",
+        },
+      },
+    },
+    MuiMenuItem: {
+      root: {
+        "&:hover": {
+          backgroundColor: "rgba(0,0,0,0.08)",
+          textDecoration: "none",
+        },
       },
     },
   },
@@ -35,6 +64,7 @@ const App = () => {
             </Route>
             <Route path="/bookmarks" component={MyBookmarks} exact />
             <Route path="/collections" component={MyCollections} exact />
+            <Route path="/collections/:title" component={MyCollections} />
             <Route path="/test" component={Test} exact />
           </Switch>
         </BrowserRouter>
