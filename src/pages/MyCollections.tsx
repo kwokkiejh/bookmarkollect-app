@@ -1,8 +1,20 @@
-import React from "react";
-import { Grid, Hidden, Typography, Container, List } from "@material-ui/core";
-import TopAppBar from "../components/TopAppBar";
+import React, { useEffect } from "react";
+import {
+  Grid,
+  Hidden,
+  Typography,
+  ListItem,
+  List,
+  useMediaQuery,
+  useTheme,
+  Box,
+} from "@material-ui/core";
+import LayoutWithAddButton from "../components/LayoutWithAddButton";
 import CollectionItem from "../components/CollectionItem";
 import BookmarkItem from "../components/BookmarkItem";
+import { useLocation, useParams } from "react-router-dom";
+import { PanoramaFishEye } from "@material-ui/icons";
+import CreateNewDialog from "../components/CreateNewDialog";
 
 const listOfBookmarks = [
   {
@@ -40,6 +52,20 @@ const MyCollections = () => {
   );
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
+  const [selectedCollectionId, setSelectedCollectionId] = React.useState<
+    null | number
+  >(null);
+
+  const params = useParams();
+  const theme = useTheme();
+  const matchesBreakpointXs = useMediaQuery(theme.breakpoints.only("xs"));
+
+  useEffect(() => {
+    if (matchesBreakpointXs && Object.keys(params).length === 0) {
+      console.log("remove selected");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [matchesBreakpointXs]);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -47,6 +73,12 @@ const MyCollections = () => {
   const handleClickClose = () => {
     setOpen(false);
     setBookmarkSelected(true);
+  };
+
+  const handleBookmarkCollectionClick = (valueClicked: boolean) => {
+    if (bookmarkSelected !== valueClicked) {
+      setBookmarkSelected(!bookmarkSelected);
+    }
   };
 
   const handleMenuClick = (
@@ -73,44 +105,77 @@ const MyCollections = () => {
 
     setMenuSelectedId(null);
   };
+
+  const handleCollectionSelected = (id: number) => {
+    console.log(id);
+    setSelectedCollectionId(id);
+  };
+
+  const listOfCollections = [
+    {
+      id: 1,
+      name: "Collection 1",
+    },
+    {
+      id: 2,
+      name: "Collection 2",
+    },
+    {
+      id: 3,
+      name: "Collection 3",
+    },
+    {
+      id: 4,
+      name: "Collection 4",
+    },
+  ];
   return (
-    <>
-      <TopAppBar
-        handleClickOpen={handleClickOpen}
-        handleClickClose={handleClickClose}
-      />
-
-      <Grid container>
-        <Grid
-          item
-          xs={12}
-          sm={3}
-          container
-          direction="column"
-          style={{
-            zIndex: -1,
-            minHeight: "100vh",
-            height: "100%",
-            padding: "36px 0px",
-            borderRight: "1px solid #e0e0e0",
-            backgroundColor: "#fafafa",
-          }}
-        >
-          <Grid item xs={12}>
-            <CollectionItem />
-          </Grid>
-          <Grid item xs={12}>
-            <CollectionItem />
-          </Grid>
-        </Grid>
-
-        <Hidden only="xs">
+    <LayoutWithAddButton
+      handleClickOpen={handleClickOpen}
+      handleClickClose={handleClickClose}
+    >
+      <Grid container direction="row" alignItems="flex-start">
+        {/** Hide Collections List if at breakpoint xs AND params are passed in (aka user has specifically selected a collection) */}
+        {matchesBreakpointXs && Object.keys(params).length !== 0 ? null : (
           <Grid
             item
+            xs={12}
+            sm={3}
+            container
+            direction="column"
+            style={{
+              padding: "36px 20px",
+            }}
+          >
+            {matchesBreakpointXs && Object.keys(params).length === 0 ? (
+              <Grid item>
+                <Typography variant="h5">My Collections</Typography>
+              </Grid>
+            ) : null}
+            {listOfCollections.map((collection) => {
+              return (
+                <Grid item xs={12}>
+                  <CollectionItem
+                    collection={collection}
+                    selectedCollectionId={selectedCollectionId}
+                    params={params}
+                    matchesBreakpointXs={matchesBreakpointXs}
+                    onCollectionSelected={handleCollectionSelected}
+                  />
+                </Grid>
+              );
+            })}
+          </Grid>
+        )}
+        {/** Hide Bookmark List if at breakpoint xs AND params are not passed in (aka default collection selected/user has not specifically selected a collection) */}
+        {matchesBreakpointXs && Object.keys(params).length === 0 ? null : (
+          <Grid
+            item
+            xs={12}
             sm={9}
             container
             direction="column"
-            style={{ padding: "36px" }}
+            style={{ padding: "36px 20px" }}
           >
             <Grid item>
               <Typography variant="h6">Collection Name</Typography>
@@ -119,7 +184,7 @@ const MyCollections = () => {
               <List>
                 {listOfBookmarks.map((bookmark) => {
                   return (
-                    <Grid item xs={12}>
+                    <Grid item>
                       <BookmarkItem
                         bookmark={bookmark}
                         menuSelectedId={menuSelectedId}
@@ -135,9 +200,15 @@ const MyCollections = () => {
               </List>
             </Grid>
           </Grid>
-        </Hidden>
+        )}
       </Grid>
-    </>
+      <CreateNewDialog
+        handleClickClose={handleClickClose}
+        open={open}
+        handleBookmarkCollectionClick={handleBookmarkCollectionClick}
+        bookmarkSelected={bookmarkSelected}
+      />
+    </LayoutWithAddButton>
   );
 };
 export default MyCollections;

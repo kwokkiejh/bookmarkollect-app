@@ -2,12 +2,13 @@ import * as React from "react";
 import { List, Container, Typography } from "@material-ui/core";
 import SearchBar from "../components/SearchBar";
 import BookmarkItem from "../components/BookmarkItem";
-import TopAppBar from "../components/TopAppBar";
+import LayoutWithAddButton from "../components/LayoutWithAddButton";
 import CreateNewDialog from "../components/CreateNewDialog";
 import { useEffect } from "react";
 import * as BookmarkApi from "../apis/BookmarkApi";
 
 const MyBookmarks = () => {
+  const [reloadData, setReloadData] = React.useState(true);
   const [open, setOpen] = React.useState(false);
   const [bookmarkSelected, setBookmarkSelected] = React.useState(true);
   const [menuAnchorEl, setMenuAnchorEl] = React.useState<null | HTMLElement>(
@@ -19,12 +20,15 @@ const MyBookmarks = () => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   useEffect(() => {
-    console.log("call this first");
-    BookmarkApi.getAllBookmarks()
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-    console.log("testt");
-  }, []);
+    if (reloadData) {
+      console.log("call this first");
+      BookmarkApi.getAllBookmarks()
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+      console.log("testt");
+      setReloadData(!reloadData);
+    }
+  }, [reloadData]);
 
   const listOfBookmarks = [
     {
@@ -46,6 +50,18 @@ const MyBookmarks = () => {
     {
       id: 4,
       title: "Test 4",
+      url:
+        "https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string",
+    },
+    {
+      id: 5,
+      title: "Test 5",
+      url:
+        "https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string",
+    },
+    {
+      id: 6,
+      title: "Test 6",
       url:
         "https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string",
     },
@@ -92,15 +108,15 @@ const MyBookmarks = () => {
   };
   return (
     <>
-      <TopAppBar
+      <LayoutWithAddButton
         handleClickOpen={handleClickOpen}
         handleClickClose={handleClickClose}
       />
 
-      <Container style={{ padding: "36px" }}>
+      <Container style={{ padding: "36px 20px 0px 20px" }}>
         <Typography variant="h5">My Bookmarks</Typography>
         <SearchBar />
-        <List>
+        <List style={{ paddingBottom: "36px" }}>
           {listOfBookmarks.map((bookmark) => {
             return (
               <BookmarkItem

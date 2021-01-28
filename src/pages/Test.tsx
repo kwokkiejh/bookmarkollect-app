@@ -8,6 +8,7 @@ import {
 
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import { ListItem } from "@material-ui/core";
 
 const StyledToggleButtonGroup = withStyles((theme) => ({
   root: { border: `1px solid ${theme.palette.divider}` },
@@ -48,6 +49,7 @@ export default function Test() {
         <ToggleButton value="center" aria-label="centered">
           Collection
         </ToggleButton>
+        <ListItem button>test</ListItem>
       </StyledToggleButtonGroup>
     </div>
   );
