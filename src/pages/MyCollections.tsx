@@ -1,21 +1,21 @@
 import React, { useEffect } from "react";
 import {
   Grid,
-  Hidden,
   Typography,
-  ListItem,
   List,
   useMediaQuery,
   useTheme,
-  Box,
+  IconButton,
 } from "@material-ui/core";
-import LayoutWithAddButton from "../components/LayoutWithAddButton";
+import LayoutWithAddButton from "../layout/LayoutWithAddButton";
 import CollectionItem from "../components/CollectionItem";
 import BookmarkItem from "../components/BookmarkItem";
-import { useLocation, useParams } from "react-router-dom";
-import { PanoramaFishEye } from "@material-ui/icons";
+import { useParams } from "react-router-dom";
+import { MoreVert } from "@material-ui/icons";
 import CreateNewDialog from "../components/CreateNewDialog";
-
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import ItemMoreOptions from "../components/ItemMoreOptions";
+import useItemMoreOptions from "../hooks/useItemMoreOptions";
 const listOfBookmarks = [
   {
     id: 1,
@@ -44,18 +44,18 @@ const listOfBookmarks = [
 const MyCollections = () => {
   const [open, setOpen] = React.useState(false);
   const [bookmarkSelected, setBookmarkSelected] = React.useState(true);
-  const [menuAnchorEl, setMenuAnchorEl] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [menuSelectedId, setMenuSelectedId] = React.useState<null | number>(
-    null
-  );
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const [selectedCollectionId, setSelectedCollectionId] = React.useState<
     null | number
   >(null);
 
+  const {
+    handleItemMoreOptionsOpen,
+    handleItemMoreOptionsClose,
+    itemMenuAnchorEl,
+    selectedItemId,
+    itemDrawerOpen,
+  } = useItemMoreOptions();
   const params = useParams();
   const theme = useTheme();
   const matchesBreakpointXs = useMediaQuery(theme.breakpoints.only("xs"));
@@ -81,37 +81,17 @@ const MyCollections = () => {
     }
   };
 
-  const handleMenuClick = (
-    event: React.MouseEvent<HTMLElement>,
-    id: number
-  ) => {
-    console.log(event);
-    console.log(id);
-    setMenuAnchorEl(event.currentTarget);
-    setDrawerOpen(true);
-    setMenuSelectedId(id);
-  };
-
-  const handleMenuClose = () => {
-    setMenuAnchorEl(null);
-    setDrawerOpen(false);
-
-    setMenuSelectedId(null);
-  };
-
-  const handleDrawerClose = () => {
-    setDrawerOpen(false);
-    setMenuAnchorEl(null);
-
-    setMenuSelectedId(null);
-  };
-
   const handleCollectionSelected = (id: number) => {
     console.log(id);
     setSelectedCollectionId(id);
   };
 
-  const listOfCollections = [
+  interface Collection {
+    id: number;
+    name: string;
+  }
+
+  const listOfCollections: Collection[] = [
     {
       id: 1,
       name: "Collection 1",
@@ -129,6 +109,7 @@ const MyCollections = () => {
       name: "Collection 4",
     },
   ];
+
   return (
     <LayoutWithAddButton
       handleClickOpen={handleClickOpen}
@@ -144,7 +125,7 @@ const MyCollections = () => {
             container
             direction="column"
             style={{
-              padding: "36px 20px",
+              padding: "20px",
             }}
           >
             {matchesBreakpointXs && Object.keys(params).length === 0 ? (
@@ -152,19 +133,23 @@ const MyCollections = () => {
                 <Typography variant="h5">My Collections</Typography>
               </Grid>
             ) : null}
-            {listOfCollections.map((collection) => {
-              return (
-                <Grid item xs={12}>
-                  <CollectionItem
-                    collection={collection}
-                    selectedCollectionId={selectedCollectionId}
-                    params={params}
-                    matchesBreakpointXs={matchesBreakpointXs}
-                    onCollectionSelected={handleCollectionSelected}
-                  />
-                </Grid>
-              );
-            })}
+            <Grid item container direction="column">
+              <List style={{ paddingBottom: "70px", width: "100%" }}>
+                {listOfCollections.map((collection) => {
+                  return (
+                    <Grid item>
+                      <CollectionItem
+                        collection={collection}
+                        selectedCollectionId={selectedCollectionId}
+                        params={params}
+                        matchesBreakpointXs={matchesBreakpointXs}
+                        onCollectionSelected={handleCollectionSelected}
+                      />
+                    </Grid>
+                  );
+                })}
+              </List>
+            </Grid>
           </Grid>
         )}
         {/** Hide Bookmark List if at breakpoint xs AND params are not passed in (aka default collection selected/user has not specifically selected a collection) */}
@@ -175,24 +160,36 @@ const MyCollections = () => {
             sm={9}
             container
             direction="column"
-            style={{ padding: "36px 20px" }}
+            style={{ padding: "20px" }}
           >
-            <Grid item>
-              <Typography variant="h6">Collection Name</Typography>
+            <Grid item container direction="row" alignItems="center">
+              {matchesBreakpointXs && (
+                <Grid item style={{ marginRight: "4px" }}>
+                  <IconButton size="small">
+                    <ArrowBackIcon />
+                  </IconButton>
+                </Grid>
+              )}
+              <Grid item style={{ flexGrow: 1 }}>
+                <Typography variant="h6">Collection Name</Typography>
+              </Grid>
+              <Grid item>
+                <IconButton size="small">
+                  {" "}
+                  <MoreVert />
+                </IconButton>
+              </Grid>
             </Grid>
             <Grid item container direction="column">
-              <List>
+              <List style={{ paddingBottom: "70px", width: "100%" }}>
                 {listOfBookmarks.map((bookmark) => {
                   return (
                     <Grid item>
+                      {" "}
                       <BookmarkItem
                         bookmark={bookmark}
-                        menuSelectedId={menuSelectedId}
-                        menuAnchorEl={menuAnchorEl}
-                        onMenuClick={handleMenuClick}
-                        onMenuClose={handleMenuClose}
-                        drawerOpen={drawerOpen}
-                        onDrawerClose={handleDrawerClose}
+                        selectedItemId={selectedItemId}
+                        onMenuClick={handleItemMoreOptionsOpen}
                       />
                     </Grid>
                   );
@@ -202,6 +199,11 @@ const MyCollections = () => {
           </Grid>
         )}
       </Grid>
+      <ItemMoreOptions
+        onItemMoreOptionsClose={handleItemMoreOptionsClose}
+        itemMenuAnchorEl={itemMenuAnchorEl}
+        itemDrawerOpen={itemDrawerOpen}
+      />{" "}
       <CreateNewDialog
         handleClickClose={handleClickClose}
         open={open}
