@@ -11,7 +11,12 @@ import {
   Typography,
   useMediaQuery,
 } from "@material-ui/core";
-import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
+import {
+  createStyles,
+  makeStyles,
+  Theme,
+  withStyles,
+} from "@material-ui/core/styles";
 
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
@@ -44,22 +49,32 @@ const DialogListBox = function (
   return <ul {...props} style={{ maxHeight: "100px" }}></ul>;
 };
 
-const useStyles = makeStyles({
-  root: {
-    "&.Mui-selected": {
-      backgroundColor: "#008b94 !important",
-      color: "#fff",
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      "&.Mui-selected": {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+        fontWeight: "bold",
+        "&:hover": {
+          backgroundColor: theme.palette.primary.main,
+        },
+      },
+    },
+    paper: {
+      minWidth: "400px",
+      minHeight: "350px",
+    },
+    subtitle: {
+      textAlign: "center",
+      color: theme.palette.primary.main,
       fontWeight: "bold",
     },
-  },
-  paper: {
-    minWidth: "400px",
-    minHeight: "350px",
-  },
-});
+  })
+);
 
-const StyledToggleButtonGroup = withStyles(() => ({
-  root: { background: "#dceae3", borderRadius: 25 },
+const StyledToggleButtonGroup = withStyles((theme: Theme) => ({
+  root: { background: theme.palette.primary.light, borderRadius: 25 },
   grouped: {
     //margin: theme.spacing(0.5),
     border: "none",
@@ -74,27 +89,25 @@ const StyledToggleButtonGroup = withStyles(() => ({
 
 // revision: arrow function to pass parameter in event handler
 const BookmarkCollectionToggle = (props: CreateNewDialogProps) => {
-  const [alignment, setAlignment] = React.useState("left");
+  const [toggleValue, setToggleValue] = React.useState("bookmark");
   const classes = useStyles();
-  const handleAlignment = (
+  const handleToggleValue = (
     event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
+    newToggleValue: string
   ) => {
-    setAlignment(newAlignment);
+    setToggleValue(newToggleValue);
   };
   return (
     <div>
       <StyledToggleButtonGroup
         size="small"
-        value={alignment}
+        value={toggleValue}
         exclusive
-        onChange={handleAlignment}
-        aria-label="text alignment"
+        onChange={handleToggleValue}
         style={{ width: "100%" }}
       >
         <ToggleButton
-          value="left"
-          aria-label="left aligned"
+          value="bookmark"
           style={{ width: "50%" }}
           className={classes.root}
           selected={props.bookmarkSelected}
@@ -103,8 +116,7 @@ const BookmarkCollectionToggle = (props: CreateNewDialogProps) => {
           Bookmark
         </ToggleButton>
         <ToggleButton
-          value="center"
-          aria-label="centered"
+          value="collection"
           style={{ width: "50%" }}
           className={classes.root}
           selected={!props.bookmarkSelected}
@@ -127,20 +139,12 @@ const CreateNewDialog: React.FC<CreateNewDialogProps> = (props) => {
         open={open}
         onClose={handleClickClose}
         aria-labelledby="form-dialog-title"
-        //classes={{ paper: classes.paper }}
         fullWidth={true}
         maxWidth="xs"
         fullScreen={matchesBelow500}
       >
         <DialogContent>
-          <Typography
-            variant="subtitle2"
-            style={{
-              textAlign: "center",
-              color: "#008b94",
-              fontWeight: "bold",
-            }}
-          >
+          <Typography variant="subtitle2" className={classes.subtitle}>
             Add a new...
           </Typography>
 

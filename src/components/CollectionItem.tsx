@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Divider,
   ListItem,
   ListItemAvatar,
   ListItemText,
@@ -8,7 +7,6 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import FolderIcon from "@material-ui/icons/Folder";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core";
 
 interface CollectionItemProps {
@@ -27,17 +25,6 @@ interface CollectionItemProps {
   onCollectionSelected: (id: number) => void;
 }
 
-const theme = createMuiTheme({
-  overrides: {
-    MuiListItem: {
-      button: {
-        "&:hover": {
-          backgroundColor: "transparent",
-        },
-      },
-    },
-  },
-});
 /**https://stackoverflow.com/questions/61486061/how-to-set-selected-and-hover-color-of-listitem-in-material-ui */
 const useStyles = makeStyles<Theme, CollectionItemProps>({
   small: {
@@ -60,13 +47,7 @@ const useStyles = makeStyles<Theme, CollectionItemProps>({
   selected: {},
 });
 const CollectionItem: React.FC<CollectionItemProps> = (props) => {
-  const {
-    params,
-    matchesBreakpointXs,
-    selectedCollectionId,
-    collection,
-    onCollectionSelected,
-  } = props;
+  const { selectedCollectionId, collection, onCollectionSelected } = props;
   const classes = useStyles(props);
 
   return (

@@ -7,7 +7,7 @@ import Test from "./pages/Test";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import MyCollections from "./pages/MyCollections";
 
-const theme = createMuiTheme({
+const paletteTheme = createMuiTheme({
   palette: {
     primary: {
       light: "#dceae3",
@@ -15,43 +15,47 @@ const theme = createMuiTheme({
       contrastText: "#fff",
     },
   },
-  overrides: {
-    MuiButton: {
-      root: {
-        borderRadius: 25,
-      },
-    },
-    MuiIconButton: {
-      root: {
-        "&:hover": {
-          backgroundColor: "#dceae3",
+});
+const theme = createMuiTheme(
+  {
+    overrides: {
+      MuiButton: {
+        root: {
+          borderRadius: 25,
         },
       },
-    },
+      MuiIconButton: {
+        root: {
+          "&:hover": {
+            backgroundColor: paletteTheme.palette.primary.light,
+          },
+        },
+      },
 
-    MuiListItem: {
-      root: {
-        "&$selected": {
-          backgroundColor: "#dceae3",
+      MuiListItem: {
+        root: {
+          "&$selected": {
+            backgroundColor: paletteTheme.palette.primary.light,
+          },
+        },
+        button: {
+          "&:hover": {
+            backgroundColor: paletteTheme.palette.primary.light,
+          },
         },
       },
-      button: {
-        "&:hover": {
-          backgroundColor: "#dceae3",
-          //textDecoration: "underline",
-        },
-      },
-    },
-    MuiMenuItem: {
-      root: {
-        "&:hover": {
-          backgroundColor: "rgba(0,0,0,0.08)",
-          textDecoration: "none",
+      MuiMenuItem: {
+        root: {
+          "&:hover": {
+            backgroundColor: "rgba(0,0,0,0.08)",
+            textDecoration: "none",
+          },
         },
       },
     },
   },
-});
+  paletteTheme
+);
 
 const App = () => {
   return (
