@@ -1,3 +1,18 @@
+# Bookmarkollect app
+
+Project deployed to AWS ECS with the use of docker container: http://ec2-3-15-184-137.us-east-2.compute.amazonaws.com/bookmarks
+
+UI/UX inspired by Google Collections and Chrome Bookmarks Manager
+
+UI/UX done, functions still a WIP.
+
+
+![Screenshot 2021-07-26 at 3 03 16 PM](https://user-images.githubusercontent.com/71374506/126947795-120cceab-ecda-436f-acd4-4f2614dab8df.png)
+![Screenshot 2021-07-26 at 3 03 28 PM](https://user-images.githubusercontent.com/71374506/126947810-b394df9b-415f-49fd-a8b8-21630b5131cd.png)
+![Screenshot 2021-07-26 at 3 03 32 PM](https://user-images.githubusercontent.com/71374506/126947808-9ce26ba9-fca9-4836-9cd8-0663e3302fb8.png)
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
