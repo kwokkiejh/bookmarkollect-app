@@ -1,7 +1,5 @@
 # Bookmarkollect app
 
-Project deployed to AWS ECS with the use of docker container: http://ec2-3-15-184-137.us-east-2.compute.amazonaws.com/bookmarks
-
 UI/UX inspired by Google Collections and Chrome Bookmarks Manager
 
 UI/UX done, functions still a WIP.
